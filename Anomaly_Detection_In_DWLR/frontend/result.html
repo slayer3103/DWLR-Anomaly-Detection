@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        /* General Reset and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    background: linear-gradient(45deg, #f8f9fa, #d1e7f5);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+        /* Header Styling */
+        header {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 1.5rem 2rem;
+            width: 100%;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Controls Section */
+        #controls {
+            display: flex;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #controls label {
+            font-weight: 500;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        #controls select {
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            width: 200px;
+        }
+
+        #controls select:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.6);
+        }
+
+        /* Selected Info Section */
+        #selected-info {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #333;
+            margin: 1rem 0;
+        }
+
+        #status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+
+        .status-indicator.green {
+            background-color: #28a745;
+        }
+
+        .status-indicator.red {
+            background-color: #dc3545;
+        }
+
+        /* Results Section */
+        #results {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        /* Result Cards */
+        .result-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            width: 260px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #4a90e2;
+            font-weight: 600;
+        }
+
+        .result-card p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .result-card p.status-indicator {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Loading Animation */
+        .loading {
+            font-size: 1.5rem;
+            color: #4a90e2;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            #controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #results {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .result-card {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>DWLR Monitoring Dashboard</h1>
+    </header>
+
+    <div id="controls">
+        <label for="dwlr_id">DWLR ID:</label>
+        <select id="dwlr_id">
+            <option value="" disabled selected>Select a DWLR</option>
+        </select>
+
+        <label for="timestamp">Timestamp:</label>
+        <select id="timestamp">
+            <option value="" disabled selected>Select a Timestamp</option>
+        </select>
+    </div>
+
+    <div id="selected-info">
+        <h2 id="selected_info">Selected: None</h2>
+        <div>
+            <span>Overall Anomaly Status: </span>
+            <span id="overall_status" class="status-indicator">N/A</span>
+        </div>
+    </div>
+
+    <div id="results">
+        <div class="result-card">
+            <h3>Depth</h3>
+            <p id="depth_value">N/A</p>
+            <p id="depth_status" class="status-indicator">N/A</p>
+        </div>
+        <div class="result-card">
+            <h3>Temperature</h3>
+            <p id="temperature_value">N/A</p>
+            <p id="temperature_status" class="status-indicator">N/A</p>
+        </div>
+        <div class="result-card">
+            <h3>Battery Level</h3>
+            <p id="battery_value">N/A</p>
+            <p id="battery_status" class="status-indicator">N/A</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const dwlrSelect = document.getElementById('dwlr_id');
+            const timestampSelect = document.getElementById('timestamp');
+            const selectedInfo = document.getElementById('selected_info');
+            const overallStatus = document.getElementById('overall_status');
+            const depthValue = document.getElementById('depth_value');
+            const depthStatus = document.getElementById('depth_status');
+            const temperatureValue = document.getElementById('temperature_value');
+            const temperatureStatus = document.getElementById('temperature_status');
+            const batteryValue = document.getElementById('battery_value');
+            const batteryStatus = document.getElementById('battery_status');
+    
+            try {
+                const response = await fetch('http://127.0.0.1:5001/get-results');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch results');
+                }
+                const data = await response.json();
+                console.log('Fetched data:', data);
+    
+                const uniqueDWLRS = [...new Set(data.map(item => item.DWLR_ID))];
+                uniqueDWLRS.forEach(dwlr => {
+                    const option = document.createElement('option');
+                    option.value = dwlr;
+                    option.textContent = dwlr;
+                    dwlrSelect.appendChild(option);
+                });
+    
+                dwlrSelect.addEventListener('change', () => {
+                    const selectedDWLR = dwlrSelect.value;
+                    const filteredData = data.filter(item => item.DWLR_ID === selectedDWLR);
+    
+                    timestampSelect.innerHTML = '<option value="" disabled selected>Select a Timestamp</option>';
+                    filteredData.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.Timestamp;
+                        option.textContent = item.Timestamp;
+                        timestampSelect.appendChild(option);
+                    });
+                });
+    
+                timestampSelect.addEventListener('change', () => {
+                    const selectedDWLR = dwlrSelect.value;
+                    const selectedTimestamp = timestampSelect.value;
+    
+                    const selectedRow = data.find(
+                        item => item.DWLR_ID === selectedDWLR && item.Timestamp === selectedTimestamp
+                    );
+    
+                    if (selectedRow) {
+                        selectedInfo.textContent = `Selected: ${selectedDWLR} at ${selectedTimestamp}`;
+                        overallStatus.textContent = selectedRow.Anomaly ? 'Anomaly Detected' : 'normal';
+                        overallStatus.className = `status-indicator ${selectedRow.Anomaly ? 'red' : 'green'}`;
+    
+                        depthValue.textContent = selectedRow.Depth;
+                        depthStatus.textContent = selectedRow.Depth_Anomaly ? 'Anomalous' : 'Normal';
+                        depthStatus.className = `status-indicator ${selectedRow.Depth_Anomaly ? 'red' : 'green'}`;
+    
+                        temperatureValue.textContent = selectedRow.Temperature;
+                        temperatureStatus.textContent = selectedRow.Temperature_Anomaly ? 'Anomalous' : 'Normal';
+                        temperatureStatus.className = `status-indicator ${selectedRow.Temperature_Anomaly ? 'red' : 'green'}`;
+    
+                        batteryValue.textContent = selectedRow['Battery Level'];
+                        batteryStatus.textContent = selectedRow.Battery_Anomaly ? 'Anomalous' : 'Normal';
+                        batteryStatus.className = `status-indicator ${selectedRow.Battery_Anomaly ? 'red' : 'green'}`;
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching or processing data:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>

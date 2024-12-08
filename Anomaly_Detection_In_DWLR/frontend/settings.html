@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - DWLR Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Your custom styles -->
+    <style>
+        /* Default (light) theme */
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+body.light-mode label {
+    color: #333;
+}
+
+/* Dark theme */
+body.dark-mode {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+body.dark-mode label {
+    color: #ffffff;
+}
+
+/* Colorful theme */
+body.colorful-mode {
+    background-color: #ffcccb;
+    color: #333;
+}
+
+body.colorful-mode label {
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <a class="navbar-brand" href="#">DWLR Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="submit-form.php">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="devices.html">DWLR Devices List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="notifications.html">Notifications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active-link" href="settings.html">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container settings-container">
+        <h1 class="text-center mt-5">Settings</h1>
+
+        <div class="settings-card">
+            <h2 class="settings-title">Dashboard Customization</h2>
+            <form>
+                <div class="form-group">
+                    <label for="themeSelect">Select Theme</label>
+                    <select class="form-control" id="themeSelect">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="colorful">Colorful</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notificationFrequency">Notification Frequency</label>
+                    <select class="form-control" id="notificationFrequency">
+                        <option>Immediately</option>
+                        <option>Hourly</option>
+                        <option>Daily</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="alertSound">Alert Sound</label>
+                    <select class="form-control" id="alertSound">
+                        <option>Chime</option>
+                        <option>Beep</option>
+                        <option>Silent</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-save" onclick="saveSettings()">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="settings-card">
+            <h2 class="settings-title">Account Settings</h2>
+            <form>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter new password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <button type="button" class="btn btn-primary btn-save" onclick="updateAccount()">Update Account</button>
+            </form>
+        </div>
+
+        <div class="text-center">
+            <a href="index.php" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Theme change functionality
+const saveSettings = () => {
+    const selectedTheme = document.getElementById('themeSelect').value;
+    document.body.classList.remove('light-mode', 'dark-mode', 'colorful-mode');
+
+    // Apply the selected theme class
+    if (selectedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    } else if (selectedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else if (selectedTheme === 'colorful') {
+        document.body.classList.add('colorful-mode');
+    }
+};
+    </script>
+</body>
+</html>
