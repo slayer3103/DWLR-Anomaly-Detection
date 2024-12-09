@@ -18,21 +18,14 @@ The **Digital Water Level Recorder (DWLR) Anomaly Detection System** is a compre
 
 ## Technologies Used
 
-- **Python**: Backend processing, anomaly detection, and APIs.
+- **Python**: Backend processing, anomaly detection, and APIs. (Version: 3.9.0 )
 - **Flask**: Backend API for handling data uploads and processing.
 - **Watchdog**: Monitors the uploads folder for new data files.
-- **TensorFlow/Keras**: LSTM models for training and detecting anomalies.
-- **PHP**: Backend for user authentication and file uploads.
+- **TensorFlow/Keras**: LSTM models for training and detecting anomalies. (Version: 2.13.0 )
+- **PHP**: Backend for user authentication and file uploads. (Version: 8.2.12 )
 - **HTML/CSS/JavaScript**: Frontend dashboard and interactivity.
 - **Bootstrap**: Responsive design for the dashboard.
-- **XAMPP**: Local server for hosting the web application.
+- **XAMPP**: Local server for hosting the web application. (Version: 8.2.12 )
 - **MySQL**: User authentication database.
 
 ---
-
-## Installation
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/slayer/DWLR-Anomaly-Detection.git
-   cd DWLR-Anomaly-Detection
